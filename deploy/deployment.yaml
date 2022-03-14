@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-proxy
+  labels:
+    app: webhook-proxy
+spec:
+  selector:
+    matchLabels:
+      app: webhook-proxy
+  template:
+    metadata:
+      labels:
+        app: webhook-proxy
+    spec:
+      containers:
+        - name: webhook-proxy
+          image: webhookproxy:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: TAG_DELIMITER
+              value: ":"
+            - name: SLEUTH_ENVIRONMENT
+              value: "defaultenvironment"
+            - name: SLEUTH_ORG_SLUG
+              value: "DEFAULTORGSLUG"
+          envFrom:
+            - secretRef:
+                name: sleuth
+          resources:
+            limits:
+              cpu: 300m
+              memory: 200Mi
+            requests:
+              cpu: 200m
+              memory: 100Mi
