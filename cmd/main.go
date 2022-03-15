@@ -78,6 +78,6 @@ func main() {
 	wh.clientSet, wh.context = k8sclient.Inconfig()
 	r := mux.NewRouter()
 	r.HandleFunc("/{destination}", wh.WebhookHandler).Methods("POST")
-	log.Println("Listing for requests at http://localhost:8080/{destinationname}")
+	log.Println("Listing for requests at http://localhost:8080/{destination}")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
