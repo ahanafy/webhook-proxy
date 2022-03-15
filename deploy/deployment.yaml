@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: webhook-proxy
-          image: webhookproxy:latest
+          image: ghcr.io/ahanafy/webhook-proxy:v1.0.0
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
