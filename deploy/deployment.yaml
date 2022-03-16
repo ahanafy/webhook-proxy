@@ -13,6 +13,7 @@ spec:
       labels:
         app: webhook-proxy
     spec:
+      serviceAccountName: webhook-proxy
       containers:
         - name: webhook-proxy
           image: ghcr.io/ahanafy/webhook-proxy:v1.0.0

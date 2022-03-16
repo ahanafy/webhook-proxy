@@ -1,0 +1,34 @@
+---
+# The service account, cluster roles, and cluster role binding are
+# only needed for Kubernetes with role-based access control (RBAC).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    name: webhook-proxy
+  name: webhook-proxy
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    name: webhook-proxy
+  name: webhook-proxy
+rules:
+  - apiGroups: ['apps']
+    resources: ['deployments']
+    verbs: ['get']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    name: webhook-proxy
+  name: webhook-proxy
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: webhook-proxy
+subjects:
+  - kind: ServiceAccount
+    name: webhook-proxy
