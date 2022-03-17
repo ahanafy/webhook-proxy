@@ -21,7 +21,6 @@ type Webhook struct {
 	Metadata  map[string]interface{}
 }
 
-
 type WebHandler struct {
 	context   context.Context
 	clientSet *kubernetes.Clientset
@@ -40,10 +39,15 @@ func (wh WebHandler) WebhookHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		var status int
-		// Do something with the Webhook struct...
-		sha, err := k8sclient.GetTag(webhook.Namespace, webhook.Name, wh.clientSet, wh.context)
+		detectedDeployment := webhook.Name
+		// Setup Deployment Name
+		if v, found := webhook.Metadata["name"]; found {
+			detectedDeployment = v.(string)
+		}
+		// Lookup Deployment
+		sha, err := k8sclient.GetTag(webhook.Namespace, detectedDeployment, wh.clientSet, wh.context)
 		if err != nil {
-			fmt.Printf("Could not get tag for %s", webhook.Name)
+			fmt.Printf("Could not get tag for %s\n", detectedDeployment)
 			status = http.StatusBadRequest
 		} else {
 
@@ -55,7 +59,7 @@ func (wh WebHandler) WebhookHandler(w http.ResponseWriter, r *http.Request) {
 				sleuth_api_key := helper.GetEnv("SLEUTH_API_KEY", "")
 				if len(sleuth_environment) != 0 && len(sleuth_api_key) != 0 {
 
-					plugins.SleuthWebhook(webhook.Name, sha, sleuth_api_key, sleuth_environment)
+					plugins.SleuthWebhook(detectedDeployment, sha, sleuth_api_key, sleuth_environment)
 				} else {
 					fmt.Println("Missing SLEUTH_API_KEY & SLEUTH_ENVIRONMENT ")
 				}
