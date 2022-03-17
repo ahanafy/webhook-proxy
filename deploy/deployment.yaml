@@ -16,7 +16,7 @@ spec:
       serviceAccountName: webhook-proxy
       containers:
         - name: webhook-proxy
-          image: ghcr.io/ahanafy/webhook-proxy:v1.0.0
+          image: ghcr.io/ahanafy/webhook-proxy:v1.1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
