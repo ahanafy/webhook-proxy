@@ -74,7 +74,7 @@ func (wh WebHandler) WebhookHandler(w http.ResponseWriter, r *http.Request) {
 
 					plugins.SleuthWebhook(sleuthDeployName, sha, sleuth_api_key, sleuth_environment)
 				} else {
-					fmt.Println("Missing SLEUTH_API_KEY & SLEUTH_ENVIRONMENT ")
+					fmt.Println("Missing SLEUTH_API_KEY and/or SLEUTH_ENVIRONMENT ")
 				}
 
 			default:

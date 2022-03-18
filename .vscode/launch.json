@@ -10,7 +10,13 @@
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/cmd",
-      "args": []
+      "args": [],
+      "env": {
+        "TAG_DELIMITER": "-",
+        "SLEUTH_API_KEY": "API_KEY",
+        "SLEUTH_ENVIRONMENT": "ENVIRONMENT",
+		"SLEUTH_ORG_SLUG":"ORG_SLUG"
+      }
     }
   ]
 }

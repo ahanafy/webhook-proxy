@@ -15,8 +15,16 @@ func SleuthWebhook(deploymentName string, sha string, sleuth_api_key string, sle
 
 	//Build Sleuth URL
 	orgslug := helper.GetEnv("SLEUTH_ORG_SLUG", "DEFAULTORGSLUG")
-	resp, err := http.Post(fmt.Sprintf("https://app.sleuth.io/api/1/deployments/%s/%s/register_deploy", orgslug, deploymentName), "application/json", postBody)
+	sleuthUrl := fmt.Sprintf("https://app.sleuth.io/api/1/deployments/%s/%s/register_deploy", orgslug, deploymentName)
 
+	req, err := http.NewRequest("POST", sleuthUrl, postBody)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	//Handle Error
+	if err != nil {
+		fmt.Printf("An Error Occured %v", err)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	//Handle Error
 	if err != nil {
 		fmt.Printf("An Error Occured %v", err)
